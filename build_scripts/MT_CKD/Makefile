@@ -13,6 +13,10 @@ MTCKD_LIB := ../../bin/libmtckd.a
 .PHONY: mtckd
 
 mtckd:
+	if [ ! -d ../../bin/ ] ; \
+	then \
+	   mkdir ../../bin/ ; \
+	fi
 	cp addlibs.inc $(MTCKD_BUILD)/addlibs.inc
 	$(MAKE) -C $(MTCKD_DIR)/build -f make_cntnm all P_TYPE=sgl FC_TYPE=gnu FC=gfortran FCFLAG="-frecord-marker=4 -fallow-argument-mismatch" util_file=util_gfortran.f90 PLATFORM=None
 	# Step 2: build your wrapper
