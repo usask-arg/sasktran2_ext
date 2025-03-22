@@ -1,0 +1,16 @@
+[package]
+name = "sasktran2_ext"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[build-dependencies]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "sasktran2_ext"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = "0.23.3"
+numpy = "0.23"

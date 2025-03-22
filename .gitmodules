@@ -1,0 +1,3 @@
+[submodule "vendor/MT_CKD"]
+	path = vendor/MT_CKD
+	url = https://github.com/AER-RC/MT_CKD.git
