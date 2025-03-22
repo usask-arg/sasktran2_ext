@@ -7,6 +7,8 @@ __pycache__/
 
 uv.lock
 
+build_scripts/MT_CKD/*.mod
+
 local_scripts
 
 # C extensions

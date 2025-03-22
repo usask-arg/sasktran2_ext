@@ -5,7 +5,7 @@ use std::path::PathBuf;
 fn compile_mt_ckd() {
     println!("cargo:rerun-if-changed=wrappers/MT_CKD/mt_ckd_wrap.f90");
     let status = Command::new("make")
-        .current_dir("build/MT_CKD")
+        .current_dir("build_scripts/MT_CKD")
         .arg("mtckd")
         .status()
         .expect("Failed to run top-level Makefile");
