@@ -1,4 +1,8 @@
 MTCKD_DIR := ../../vendor/MT_CKD
+
+MTCKD_PROFILE ?= osxGNUsgl
+MTCKD_PROFILE_DIR ?= $(MTCKD_DIR)/build/cntnm_v4.3_OS_X_gnu_sgl.obj
+
 MTCKD_MAKE := $(MTCKD_DIR)/build/make_cntnm
 MTCKD_BUILD := $(MTCKD_DIR)/build
 MTCKD_WRAPPER := ../../wrappers/MT_CKD/mt_ckd_wrap.f90

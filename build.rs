@@ -4,9 +4,28 @@ use std::path::PathBuf;
 
 fn compile_mt_ckd() {
     println!("cargo:rerun-if-changed=wrappers/MT_CKD/mt_ckd_wrap.f90");
+
+    let target = env::var("TARGET").unwrap(); // e.g. aarch64-apple-darwin
+
+    let profile = match target.as_str() {
+        t if t.contains("apple") => "osxGNUsgl",
+        t if t.contains("linux") => "linuxGNUsgl",
+        t if t.contains("windows") => "winGNUsgl",
+        _ => panic!("Unknown platform for MT_CKD"),
+    };
+
+    let profile_dir = match target.as_str() {
+        t if t.contains("apple") => "cntnm_v4.3_OS_X_gnu_sgl.obj",
+        t if t.contains("linux") => "cntnm_v4.3_linux_gnu_sgl.obj",
+        t if t.contains("windows") => "cntnm_v4.3_win_gnu_sgl.obj",
+        _ => panic!("Unknown platform for MT_CKD"),
+    };
+
     let status = Command::new("make")
         .current_dir("build_scripts/MT_CKD")
         .arg("mtckd")
+        .env("MTCKD_PROFILE", profile)
+        .env("MTCKD_PROFILE_DIR", profile_dir)
         .status()
         .expect("Failed to run top-level Makefile");
 
