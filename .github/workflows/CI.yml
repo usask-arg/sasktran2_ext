@@ -81,6 +81,10 @@ jobs:
           python-version: 3.x
           architecture: ${{ matrix.platform.target }}
   
+      - name: Install make via Chocolatey
+        run: |
+          choco install make --yes
+
       - name: Install MSYS2 and NetCDF
         uses: msys2/setup-msys2@v2
         with:
