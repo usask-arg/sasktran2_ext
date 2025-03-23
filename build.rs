@@ -5,27 +5,31 @@ use std::path::PathBuf;
 fn compile_mt_ckd() {
     println!("cargo:rerun-if-changed=wrappers/MT_CKD/mt_ckd_wrap.f90");
 
-    let target = env::var("TARGET").unwrap(); // e.g. aarch64-apple-darwin
+    let target = env::var("TARGET").unwrap(); // e.g. "aarch64-apple-darwin" or "x86_64-apple-darwin"
 
-    let profile = match target.as_str() {
-        t if t.contains("apple") => "osxGNUsgl",
-        t if t.contains("linux") => "linuxGNUsgl",
-        t if t.contains("windows") => "winGNUsgl",
-        _ => panic!("Unknown platform for MT_CKD"),
+    let (default_include, default_lib) = if target.contains("apple") {
+        if target.contains("aarch64") {
+            // Apple Silicon
+            ("/opt/homebrew/include", "/opt/homebrew/lib")
+        } else {
+            // Intel Mac
+            ("/usr/local/include", "/usr/local/lib")
+        }
+    } else if target.contains("linux") {
+        ("/usr/include", "/usr/lib")
+    } else {
+        panic!("Unsupported platform: {}", target);
     };
 
-    let profile_dir = match target.as_str() {
-        t if t.contains("apple") => "cntnm_v4.3_OS_X_gnu_sgl.obj",
-        t if t.contains("linux") => "cntnm_v4.3_linux_gnu_sgl.obj",
-        t if t.contains("windows") => "cntnm_v4.3_win_gnu_sgl.obj",
-        _ => panic!("Unknown platform for MT_CKD"),
-    };
+    // Allow environment overrides
+    let nc_include = env::var("NCI").unwrap_or_else(|_| default_include.to_string());
+    let nc_lib = env::var("NCL").unwrap_or_else(|_| default_lib.to_string());
 
     let status = Command::new("make")
         .current_dir("build_scripts/MT_CKD")
         .arg("mtckd")
-        .env("MTCKD_PROFILE", profile)
-        .env("MTCKD_PROFILE_DIR", profile_dir)
+        .env("NCL", nc_lib)
+        .env("NCI", nc_include)
         .status()
         .expect("Failed to run top-level Makefile");
 

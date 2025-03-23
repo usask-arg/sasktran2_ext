@@ -6,8 +6,6 @@ ADDLIB =
 NETCDF = no
 
 ifeq ($(FC),gfortran)
-	NCL = /opt/homebrew/lib
-	NCI = /opt/homebrew/include
 	INCLUDES:= -I. -I$(NCI) 
 	NETCDF = yes
 endif
