@@ -100,8 +100,8 @@ jobs:
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         env:
-          NCI: /mingw64/include
-          NCL: /mingw64/lib
+          NCI: C:/msys64/mingw64/include
+          NCL: C:/msys64/mingw64/lib
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
