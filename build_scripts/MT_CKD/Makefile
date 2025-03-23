@@ -9,7 +9,9 @@ MTCKD_LIB := ../../bin/libmtckd.a
 # mtckd: $(MTCKD_LIB)
 .PHONY: mtckd
 
+
 mtckd:
+	echo "Compiling with: -I$(MTCKD_DIR)/src -I$(MTCKD_BUILD) -I$(NCI)"
 	if [ ! -d ../../bin/ ] ; \
 	then \
 	   mkdir ../../bin/ ; \

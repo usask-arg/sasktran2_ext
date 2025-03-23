@@ -17,6 +17,8 @@ fn compile_mt_ckd() {
         }
     } else if target.contains("linux") {
         ("/usr/include", "/usr/lib")
+    } else if target.contains("windows") {
+        ("/mingw64/include", "/mingw64/lib")
     } else {
         panic!("Unsupported platform: {}", target);
     };
