@@ -35,19 +35,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      - name: Install netcdf-fortran
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-          gfortran \
-          libnetcdf-dev \
-          libnetcdff-dev \
-      - name: list include
-        run: |
-          ls /usr/include/
-      - name: list dpkg
-        run: |
-          dpkg -L libnetcdff-dev
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
@@ -55,6 +42,7 @@ jobs:
           args: --release --out dist --find-interpreter
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
           manylinux: auto
+          before-script-linux: build_scripts/before_manylinux.sh
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
