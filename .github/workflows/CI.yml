@@ -92,6 +92,7 @@ jobs:
         env:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
+          FC: C:/msys64/mingw64/bin/gfortran.exe
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
