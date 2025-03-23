@@ -46,7 +46,11 @@ jobs:
           sudo apt-get install -y \
           libnetcdf-dev \
           libnetcdff-dev \
-          ls -altr /usr/include/ \
+      - name: list include
+        run: |
+          ls /usr/include/
+      - name: list dpkg
+        run: |
           dpkg -L libnetcdff-dev
       - name: Build wheels
         uses: PyO3/maturin-action@v1
