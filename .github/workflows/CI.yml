@@ -52,7 +52,7 @@ jobs:
           args: --release --out dist --find-interpreter
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
           manylinux: auto
-          before-script-linux: apt update && apt install -y libnetcdff-dev gfotran
+          before-script-linux: apt update && apt install -y libnetcdff-dev gfortran
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
