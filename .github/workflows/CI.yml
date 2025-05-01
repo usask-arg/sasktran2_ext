@@ -73,7 +73,7 @@ jobs:
           submodules: 'recursive'
       - name: Debug
         run: |
-          dir
+          type vendor\MT_CKD\src\lblparams.f90
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
