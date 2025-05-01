@@ -98,6 +98,7 @@ jobs:
           NCL: C:/msys64/mingw64/lib
           FC: C:/msys64/mingw64/bin/gfortran.exe
           RUST_BACKTRACE: 1
+          CARGO_PROFILE_RELEASE_BUILD_OVERRIDE_DEBUG: true
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
