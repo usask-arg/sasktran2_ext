@@ -91,6 +91,9 @@ jobs:
             mingw-w64-x86_64-gcc-fortran
             mingw-w64-x86_64-netcdf
             mingw-w64-x86_64-netcdf-fortran
+      - name: Debug 2
+        run: |
+          cat vendor/MT_CKD/src/lblparams.f90
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         env:
