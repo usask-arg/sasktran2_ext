@@ -27,7 +27,7 @@ jobs:
         platform:
           - runner: ubuntu-22.04
             target: x86_64
-          - runner: ubuntu-22.04
+          - runner: ubuntu-22.04-arm
             target: aarch64
       fail-fast: false
     steps:
