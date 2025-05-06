@@ -91,6 +91,7 @@ jobs:
             mingw-w64-x86_64-netcdf-fortran
             mingw-w64-x86_64-make
       - name: Debug Build
+        shell: msys2 {0}
         env:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
