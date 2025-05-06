@@ -68,7 +68,19 @@ jobs:
         platform:
           - runner: windows-latest
             target: x64
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
+      - name: Install MSYS2 and NetCDF
+        uses: msys2/setup-msys2@v2
+        with:
+          release: false
+          install: >-
+            mingw-w64-x86_64-gcc-fortran
+            mingw-w64-x86_64-netcdf
+            mingw-w64-x86_64-netcdf-fortran
+            mingw-w64-x86_64-make
       - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
@@ -81,17 +93,7 @@ jobs:
       #   run: |
       #     choco install make --yes
 
-      - name: Install MSYS2 and NetCDF
-        uses: msys2/setup-msys2@v2
-        with:
-          release: false
-          install: >-
-            mingw-w64-x86_64-gcc-fortran
-            mingw-w64-x86_64-netcdf
-            mingw-w64-x86_64-netcdf-fortran
-            mingw-w64-x86_64-make
       - name: Debug Build
-        shell: msys2 {0}
         env:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
