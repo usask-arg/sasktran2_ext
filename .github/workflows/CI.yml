@@ -119,7 +119,7 @@ jobs:
           # CARGO_PROFILE_RELEASE_BUILD_OVERRIDE_DEBUG: true
         with:
           target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter -vv
+          args: --release --out dist --find-interpreter
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
 
       - name: Upload wheels
