@@ -80,7 +80,6 @@ jobs:
             mingw-w64-x86_64-gcc-fortran
             mingw-w64-x86_64-netcdf
             mingw-w64-x86_64-netcdf-fortran
-            mingw-w64-x86_64-make
       - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
@@ -89,9 +88,9 @@ jobs:
           python-version: 3.x
           architecture: ${{ matrix.platform.target }}
   
-      # - name: Install make via Chocolatey
-      #   run: |
-      #     choco install make --yes
+      - name: Install make via Chocolatey
+        run: |
+          choco install make --yes
 
       - name: Debug Build
         env:
