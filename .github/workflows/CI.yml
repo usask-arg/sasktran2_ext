@@ -103,6 +103,7 @@ jobs:
           FC: C:/msys64/mingw64/bin/gfortran.exe
         run: |
           echo $PATH
+          whereis make
           which make
           cd build_scripts/MT_CKD
           make mtckd
@@ -114,8 +115,8 @@ jobs:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
           FC: C:/msys64/mingw64/bin/gfortran.exe
-          RUST_BACKTRACE: full
-          CARGO_PROFILE_RELEASE_BUILD_OVERRIDE_DEBUG: true
+          # RUST_BACKTRACE: full
+          # CARGO_PROFILE_RELEASE_BUILD_OVERRIDE_DEBUG: true
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter -vv
