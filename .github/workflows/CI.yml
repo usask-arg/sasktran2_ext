@@ -100,6 +100,7 @@ jobs:
           NCL: C:/msys64/mingw64/lib
           FC: C:/msys64/mingw64/bin/gfortran.exe
         run: |
+          echo $PATH
           which make
           cd build_scripts/MT_CKD
           make mtckd
