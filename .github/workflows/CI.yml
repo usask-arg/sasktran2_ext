@@ -77,9 +77,9 @@ jobs:
           python-version: 3.x
           architecture: ${{ matrix.platform.target }}
   
-      - name: Install make via Chocolatey
-        run: |
-          choco install make --yes
+      # - name: Install make via Chocolatey
+      #   run: |
+      #     choco install make --yes
 
       - name: Install MSYS2 and NetCDF
         uses: msys2/setup-msys2@v2
@@ -89,13 +89,14 @@ jobs:
             mingw-w64-x86_64-gcc-fortran
             mingw-w64-x86_64-netcdf
             mingw-w64-x86_64-netcdf-fortran
+            mingw-w64-x86_64-make
       - name: Debug Build
         env:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
           FC: C:/msys64/mingw64/bin/gfortran.exe
-          MAKE: C:/ProgramData/chocolatey/lib/make
         run: |
+          which make
           cd build_scripts/MT_CKD
           make mtckd
           cd ../..
@@ -105,7 +106,6 @@ jobs:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
           FC: C:/msys64/mingw64/bin/gfortran.exe
-          MAKE: C:/ProgramData/chocolatey/lib/make
           RUST_BACKTRACE: full
           CARGO_PROFILE_RELEASE_BUILD_OVERRIDE_DEBUG: true
         with:
