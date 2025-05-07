@@ -41,7 +41,7 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           release: false
-          path-type: inherit
+          # path-type: inherit
           install: >-
             mingw-w64-x86_64-gcc-fortran
             mingw-w64-x86_64-netcdf
@@ -69,18 +69,15 @@ jobs:
       #   run: |
       #     choco install make --yes
 
-      # - name: Debug Build
-      #   env:
-      #     NCI: C:/msys64/mingw64/include
-      #     NCL: C:/msys64/mingw64/lib
-      #     FC: C:/msys64/mingw64/bin/gfortran.exe
-      #   run: |
-      #     echo $PATH
-      #     whereis make
-      #     which make
-      #     cd build_scripts/MT_CKD
-      #     make mtckd
-      #     cd ../..
+      - name: Debug Build
+        env:
+          NCI: C:/msys64/mingw64/include
+          NCL: C:/msys64/mingw64/lib
+          FC: C:/msys64/mingw64/bin/gfortran.exe
+        run: |
+          cd build_scripts/MT_CKD
+          make mtckd
+          cd ../..
 
       - name: Debug 3
         run: |
