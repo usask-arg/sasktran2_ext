@@ -33,6 +33,10 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
+      - name: Debug 0
+        run: |
+          env
+
       - name: Install MSYS2 and NetCDF
         uses: msys2/setup-msys2@v2
         with:
@@ -44,9 +48,17 @@ jobs:
             mingw-w64-x86_64-netcdf-fortran
             mingw-w64-x86_64-make
 
+      - name: Debug 1
+        run: |
+          env
+
       - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
+
+      - name: Debug 2
+        run: |
+          env
 
       - uses: actions/setup-python@v5
         with:
@@ -57,18 +69,22 @@ jobs:
       #   run: |
       #     choco install make --yes
 
-      - name: Debug Build
-        env:
-          NCI: C:/msys64/mingw64/include
-          NCL: C:/msys64/mingw64/lib
-          FC: C:/msys64/mingw64/bin/gfortran.exe
+      # - name: Debug Build
+      #   env:
+      #     NCI: C:/msys64/mingw64/include
+      #     NCL: C:/msys64/mingw64/lib
+      #     FC: C:/msys64/mingw64/bin/gfortran.exe
+      #   run: |
+      #     echo $PATH
+      #     whereis make
+      #     which make
+      #     cd build_scripts/MT_CKD
+      #     make mtckd
+      #     cd ../..
+
+      - name: Debug 3
         run: |
-          echo $PATH
-          whereis make
-          which make
-          cd build_scripts/MT_CKD
-          make mtckd
-          cd ../..
+          env
 
       - name: Build wheels
         uses: PyO3/maturin-action@v1
