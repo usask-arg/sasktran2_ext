@@ -28,10 +28,10 @@ jobs:
       matrix:
         platform:
           - runner: windows-latest
-            target: x64
-    defaults:
-      run:
-        shell: msys2 {0}
+    #         target: x64
+    # defaults:
+    #   run:
+    #     shell: msys2 {0}
     steps:
       # - name: Debug 0
       #   run: |
