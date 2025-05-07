@@ -72,6 +72,8 @@ jobs:
       - name: Debug choco
         run: |
           make --version
+          export PATH=C:/ProgramData/chocolatey/lib/:$PATH
+          make --version
 
       - name: Debug Build
         env:
