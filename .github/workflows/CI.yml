@@ -65,19 +65,22 @@ jobs:
           python-version: 3.x
           architecture: ${{ matrix.platform.target }}
   
-      # - name: Install make via Chocolatey
-      #   run: |
-      #     choco install make --yes
+      - name: Install make via Chocolatey
+        run: |
+          choco install make --yes
+          make --version
+      - name: Debug choco
+        run: |
+          make --version
 
       - name: Debug Build
         env:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
           FC: C:/msys64/mingw64/bin/gfortran.exe
-          MAKE: /usr/bin/make
         run: |
           cd build_scripts/MT_CKD
-          /usr/bin/make mtckd
+          make mtckd
           cd ../..
 
       - name: Debug 3
