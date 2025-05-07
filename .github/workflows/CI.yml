@@ -74,9 +74,10 @@ jobs:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
           FC: C:/msys64/mingw64/bin/gfortran.exe
+          MAKE: /usr/bin/make
         run: |
           cd build_scripts/MT_CKD
-          make mtckd
+          /usr/bin/make mtckd
           cd ../..
 
       - name: Debug 3
