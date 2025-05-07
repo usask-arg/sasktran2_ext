@@ -50,13 +50,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
-      
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-          architecture: ${{ matrix.platform.target }}
 
-      - name: Build
+      - name: Build Fortran
         env:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
@@ -65,3 +60,27 @@ jobs:
           cd build_scripts/MT_CKD
           make mtckd
           cd ../..
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+          architecture: ${{ matrix.platform.target }}
+      
+      - name: Debug
+        run: |
+          ls C:/msys64/mingw64/include
+          ls C:/msys64/mingw64/lib
+          ls C:/msys64/mingw64/bin
+
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        env:
+          NCI: C:/msys64/mingw64/include
+          NCL: C:/msys64/mingw64/lib
+          FC: C:/msys64/mingw64/bin/gfortran.exe
+          # RUST_BACKTRACE: full
+          # CARGO_PROFILE_RELEASE_BUILD_OVERRIDE_DEBUG: true
+        with:
+          target: ${{ matrix.platform.target }}
+          args: --release --out dist --find-interpreter
+          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
