@@ -11,6 +11,7 @@ on:
       - main
       - master
       - ci-build
+      - windows-sandbox
     tags:
       - '*'
   pull_request:
