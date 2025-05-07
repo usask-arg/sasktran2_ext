@@ -72,7 +72,6 @@ jobs:
       - name: Debug choco
         run: |
           make --version
-          export PATH=C:/ProgramData/chocolatey/lib/:$PATH
           $env:MY_VAR = "hello"
           "MY_VAR=$env:MY_VAR" | Out-File -FilePath $env:GITHUB_ENV -Append
           make --version
