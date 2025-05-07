@@ -28,14 +28,11 @@ jobs:
       matrix:
         platform:
           - runner: windows-latest
-    #         target: x64
-    # defaults:
-    #   run:
-    #     shell: msys2 {0}
+            target: x64
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
-      # - name: Debug 0
-      #   run: |
-      #     env
 
       - name: Install MSYS2 and NetCDF
         uses: msys2/setup-msys2@v2
@@ -48,58 +45,6 @@ jobs:
             mingw-w64-x86_64-netcdf-fortran
             mingw-w64-x86_64-make
 
-      - name: Debug 1
+      - name: Debug
         run: |
           make --version
-
-      - uses: actions/checkout@v4
-        with:
-          submodules: 'recursive'
-
-      - name: Debug 2
-        run: |
-          make --version
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-          architecture: ${{ matrix.platform.target }}
-  
-      - name: Install make via Chocolatey
-        run: |
-          choco install make --yes
-          make --version
-      - name: Debug choco
-        run: |
-          make --version
-          $newPath = "C:\ProgramData\chocolatey\lib"
-          $env:PATH = "$newPath;$env:PATH"
-          "$newPath" | Out-File -FilePath $env:GITHUB_ENV -Append
-          make --version
-
-      - name: Debug Build
-        env:
-          NCI: C:/msys64/mingw64/include
-          NCL: C:/msys64/mingw64/lib
-          FC: C:/msys64/mingw64/bin/gfortran.exe
-        run: |
-          cd build_scripts/MT_CKD
-          make mtckd
-          cd ../..
-
-      - name: Debug 3
-        run: |
-          env
-
-      - name: Build wheels
-        uses: PyO3/maturin-action@v1
-        env:
-          NCI: C:/msys64/mingw64/include
-          NCL: C:/msys64/mingw64/lib
-          FC: C:/msys64/mingw64/bin/gfortran.exe
-          # RUST_BACKTRACE: full
-          # CARGO_PROFILE_RELEASE_BUILD_OVERRIDE_DEBUG: true
-        with:
-          target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
-          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
