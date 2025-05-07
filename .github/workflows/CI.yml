@@ -50,7 +50,7 @@ jobs:
 
       - name: Debug 1
         run: |
-          env
+          make --version
 
       - uses: actions/checkout@v4
         with:
@@ -58,7 +58,7 @@ jobs:
 
       - name: Debug 2
         run: |
-          env
+          make --version
 
       - uses: actions/setup-python@v5
         with:
