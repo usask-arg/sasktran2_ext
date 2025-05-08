@@ -78,5 +78,5 @@ jobs:
         with:
           target: ${{ matrix.platform.target }}
           # target: x86_64-pc-windows-gnu
-          args: --release --out dist --find-interpreter
+          args: --release --out dist --find-interpreter -vv
           # sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
