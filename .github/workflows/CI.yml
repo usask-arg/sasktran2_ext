@@ -29,9 +29,9 @@ jobs:
         platform:
           - runner: windows-latest
             target: x64
-    defaults:
-      run:
-        shell: msys2 {0}
+    # defaults:
+    #   run:
+    #     shell: msys2 {0}
     steps:
 
       - name: Install MSYS2 and NetCDF
@@ -65,12 +65,6 @@ jobs:
         with:
           python-version: 3.x
           architecture: ${{ matrix.platform.target }}
-      
-      # - name: Debug
-      #   run: |
-      #     ls C:/msys64/mingw64/include
-      #     ls C:/msys64/mingw64/lib
-      #     ls C:/msys64/mingw64/bin
 
       - name: Build wheels
         uses: PyO3/maturin-action@v1
