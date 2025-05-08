@@ -7,8 +7,7 @@ MTCKD_WRAPPER := ../../wrappers/MT_CKD/mt_ckd_wrap.f90
 export MTCKD_LIB_NAME
 MTCKD_LIB_NAME ?= libmtckd.a
 
-# MTCKD_LIB := ../../bin/$(MTCKD_LIB_NAME)
-MTCKD_LIB := ../../bin/mtckd.lib
+MTCKD_LIB := ../../bin/$(MTCKD_LIB_NAME)
 
 export FC
 FC ?= gfortran
