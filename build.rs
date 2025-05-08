@@ -41,7 +41,7 @@ fn compile_mt_ckd() {
         .status()
         .expect("Failed to run top-level Makefile");
 
-    // assert!(status.success());
+    assert!(status.success());
 
     println!("cargo:rustc-link-search=native=bin/");
     println!("cargo:rustc-link-lib=static=mtckd");
