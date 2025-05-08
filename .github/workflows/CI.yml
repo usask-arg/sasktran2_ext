@@ -66,11 +66,11 @@ jobs:
           python-version: 3.x
           architecture: ${{ matrix.platform.target }}
       
-      - name: Debug
-        run: |
-          ls C:/msys64/mingw64/include
-          ls C:/msys64/mingw64/lib
-          ls C:/msys64/mingw64/bin
+      # - name: Debug
+      #   run: |
+      #     ls C:/msys64/mingw64/include
+      #     ls C:/msys64/mingw64/lib
+      #     ls C:/msys64/mingw64/bin
 
       - name: Build wheels
         uses: PyO3/maturin-action@v1
@@ -83,4 +83,4 @@ jobs:
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
-          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
+          # sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
