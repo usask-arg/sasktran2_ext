@@ -28,7 +28,7 @@ jobs:
       matrix:
         platform:
           - runner: windows-latest
-            target: x86_64-pc-windows-gnu
+            target: x64
     defaults:
       run:
         shell: msys2 {0}
