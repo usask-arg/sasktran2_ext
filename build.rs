@@ -28,6 +28,7 @@ fn compile_mt_ckd() {
     let nc_lib = env::var("NCL").unwrap_or_else(|_| default_lib.to_string());
     let FC = env::var("FC").unwrap_or_else(|_| "gfortran".to_string());
     let PATH = env::var("PATH").unwrap_or_else(|_| "".to_string());
+    let MTCKD_LIB_NAME = env::var("MTCKD_LIB_NAME").unwrap_or_else(|_|, "libmtckd.a".to_string())
 
     let status = Command::new("make")
         .current_dir("build_scripts/MT_CKD")
@@ -36,6 +37,7 @@ fn compile_mt_ckd() {
         .env("NCI", nc_include)
         .env("FC", FC)
         .env("PATH", PATH)
+        .env("MTCKD_LIB_NAME", MTCKD_LIB_NAME)
         .status()
         .expect("Failed to run top-level Makefile");
 
