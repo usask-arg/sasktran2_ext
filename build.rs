@@ -29,17 +29,17 @@ fn compile_mt_ckd() {
     let FC = env::var("FC").unwrap_or_else(|_| "gfortran".to_string());
     let PATH = env::var("PATH").unwrap_or_else(|_| "".to_string());
 
-    let status = Command::new("make")
-        .current_dir("build_scripts/MT_CKD")
-        .arg("mtckd")
-        .env("NCL", nc_lib)
-        .env("NCI", nc_include)
-        .env("FC", FC)
-        .env("PATH", PATH)
-        .status()
-        .expect("Failed to run top-level Makefile");
+    // let status = Command::new("make")
+    //     .current_dir("build_scripts/MT_CKD")
+    //     .arg("mtckd")
+    //     .env("NCL", nc_lib)
+    //     .env("NCI", nc_include)
+    //     .env("FC", FC)
+    //     .env("PATH", PATH)
+    //     .status()
+    //     .expect("Failed to run top-level Makefile");
 
-    assert!(status.success());
+    // assert!(status.success());
 
     println!("cargo:rustc-link-search=native=bin/");
     println!("cargo:rustc-link-lib=static=mtckd");
