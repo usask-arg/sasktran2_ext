@@ -31,7 +31,7 @@ fn compile_mt_ckd() {
     let MTCKD_LIB_NAME = env::var("MTCKD_LIB_NAME").unwrap_or_else(|_| "libmtckd.a".to_string());
 
     if target.contains("windows") {
-        let bash = r"C:\msys64\usr\bin\bash.exe";
+        let bash = r"C:\msys64\mingw64\bin\bash.exe";
         let status = Command::new(bash)
             .current_dir("build_scripts/MT_CKD")
             .args(["-lc", "make mtckd"])
