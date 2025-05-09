@@ -12,6 +12,7 @@ on:
       - master
       - ci-build
       - windows-sandbox
+      - windows-sandbox2
     tags:
       - '*'
   pull_request:
