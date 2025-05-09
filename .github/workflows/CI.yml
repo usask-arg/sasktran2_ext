@@ -62,11 +62,12 @@ jobs:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
           FC: C:/msys64/mingw64/bin/gfortran.exe
+          MTCKD_LIB_NAME: mtckd.lib
+        shell: msys2 {0}
         run: |
           cd build_scripts/MT_CKD
           make mtckd
           cd ../..
-          mv bin/libmtckd.a bin/mtckd.lib
 
       - name: Build wheels
         uses: PyO3/maturin-action@v1
