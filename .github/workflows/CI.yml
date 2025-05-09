@@ -39,7 +39,7 @@ jobs:
       - name: Build
         run: |
           cd build_scripts/MT_CKD
-          make mtckd
+          make mtckd_static
           cd ../..
       - name: Build wheels
         uses: PyO3/maturin-action@v1
