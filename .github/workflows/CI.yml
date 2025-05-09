@@ -70,7 +70,7 @@ jobs:
           cd ../..
           cd bin
           gendef mtckd.dll
-          lib /def:mtckd.def /out:../../bin/mtckd.lib
+          dlltool -d mtckd.def -l mtckd.lib
           cd ..
 
       - name: Build wheels
