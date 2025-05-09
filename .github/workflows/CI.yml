@@ -184,6 +184,21 @@ jobs:
         run: |
           brew install netcdf-fortran
       - name: Build
+        if: matrix.platform.target == 'x86_64'
+        env:
+          FC: gfortran
+          NCI: /usr/local/include
+          NCL: /usr/local/lib
+        run: |
+          cd build_scripts/MT_CKD
+          make mtckd_static
+          cd ../..
+      - name: Build
+        if: matrix.platform.target == 'aarch64'
+        env:
+          FC: gfortran
+          NCI: /opt/homebrew/include
+          NCL: /opt/homebrew/lib
         run: |
           cd build_scripts/MT_CKD
           make mtckd_static
