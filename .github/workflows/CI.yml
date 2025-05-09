@@ -71,6 +71,7 @@ jobs:
           cd bin
           gendef mtckd.dll
           dlltool -d mtckd.def -l mtckd.lib
+          cp mtckd.dll c:/msys64/mingw64/bin/
           cd ..
 
       - name: Build wheels
@@ -88,7 +89,7 @@ jobs:
       - name: Append msys root to path
         shell: bash -el {0}
         run: |
-          echo "PATH=$env:PATH:c:/msys64/mingw64/bin" >> $GITHUB_ENV
+          echo "PATH=$env:PATH:c:/msys64/mingw64/bin:bin/" >> $GITHUB_ENV
 
       - name: delve wheels
         shell: bash -el {0}
