@@ -90,11 +90,14 @@ jobs:
         shell: bash -el {0}
         run: |
           echo "PATH=$env:PATH;c:/msys64/mingw64/bin/;bin/" >> $env:GITHUB_ENV
+          ls -l c:/msys64/mingw64/bin/
+          echo $env:PATH
 
       - name: delve wheels
         shell: bash -el {0}
         run: |
           pip install delvewheel
+          delvewheel show dist/*whl
           delvewheel repair dist/*.whl
           rm -rf dist/*.whl
           mv wheelhouse/*.whl dist/
