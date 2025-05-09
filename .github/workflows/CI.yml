@@ -38,6 +38,10 @@ jobs:
         with:
           python-version: 3.x
       - name: Build
+        env:
+          NCI: /usr/include
+          NCL: /usr/lib
+          FC: gfortran
         run: |
           sudo apt update && sudo apt install -y libnetcdff-dev gfortran
           cd build_scripts/MT_CKD
