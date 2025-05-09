@@ -68,6 +68,10 @@ jobs:
           cd build_scripts/MT_CKD
           make mtckd
           cd ../..
+          cd bin
+          gendef mtckd.dll
+          lib /def:mtckd.def /out:../../bin/mtckd.lib
+          cd ..
 
       - name: Build wheels
         uses: PyO3/maturin-action@v1
