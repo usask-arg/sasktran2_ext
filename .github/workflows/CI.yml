@@ -36,6 +36,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
+      - name: Build
+        run: |
+          cd build_scripts/MT_CKD
+          make mtckd
+          cd ../..
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         if: matrix.platform.target == 'x86_64'
@@ -103,7 +108,7 @@ jobs:
         shell: msys2 {0}
         run: |
           cd build_scripts/MT_CKD
-          make mtckd
+          make mtckd_shared
           cd ../..
           cd bin
           gendef mtckd.dll
@@ -172,6 +177,11 @@ jobs:
       - name: Install netcdf-fortran
         run: |
           brew install netcdf-fortran
+      - name: Build
+        run: |
+          cd build_scripts/MT_CKD
+          make mtckd_static
+          cd ../..
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
