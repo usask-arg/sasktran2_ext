@@ -4,7 +4,7 @@ use std::path::PathBuf;
 
 fn compile_mt_ckd() {
     println!("cargo:rustc-link-search=native=bin/");
-    println!("cargo:rustc-link-lib=static=mtckd");
+    println!("cargo:rustc-link-lib=dylib=mtckd");
     println!("cargo:rustc-link-lib=gfortran");
 
     // Link NetCDF Fortran libraries
