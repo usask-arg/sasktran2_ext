@@ -87,11 +87,9 @@ jobs:
           # sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
 
       - name: Append msys root to path
-        shell: bash -el {0}
+        shell: bash
         run: |
-          echo "PATH=$env:PATH;c:/msys64/mingw64/bin/;bin/" >> $env:GITHUB_ENV
-          ls -l c:/msys64/mingw64/bin/
-          echo $env:PATH
+          echo "PATH=$PATH:/c/msys64/mingw64/bin:bin" >> "$GITHUB_ENV"
 
       - name: delve wheels
         shell: bash -el {0}
