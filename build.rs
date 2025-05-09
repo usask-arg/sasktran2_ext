@@ -30,7 +30,21 @@ fn compile_mt_ckd() {
     let PATH = env::var("PATH").unwrap_or_else(|_| "".to_string());
     let MTCKD_LIB_NAME = env::var("MTCKD_LIB_NAME").unwrap_or_else(|_| "libmtckd.a".to_string());
 
-    let status = Command::new("make")
+    if target.contains("windows") {
+        let bash = r"C:\msys64\usr\bin\bash.exe";
+        let status = Command::new(bash)
+            .current_dir("build_scripts/MT_CKD")
+            .args(["-lc", "make mtckd"])
+            .env("NCL", nc_lib)
+            .env("NCI", nc_include)
+            .env("FC", FC)
+            .env("PATH", PATH)
+            .env("MTCKD_LIB_NAME", MTCKD_LIB_NAME)
+            .status()
+            .expect("Failed to run top-level Makefile");
+        assert!(status.success());
+    } else {
+        let status = Command::new("make")
         .current_dir("build_scripts/MT_CKD")
         .arg("mtckd")
         .env("NCL", nc_lib)
@@ -42,6 +56,9 @@ fn compile_mt_ckd() {
         .expect("Failed to run top-level Makefile");
 
     assert!(status.success());
+    }
+
+
 
     println!("cargo:rustc-link-search=native=bin/");
     println!("cargo:rustc-link-lib=static=mtckd");
