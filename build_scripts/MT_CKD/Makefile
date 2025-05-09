@@ -28,6 +28,6 @@ mtckd:
 	# Step 2: build your wrapper
 	$(FC) -c -O2 -fPIC -I$(MTCKD_DIR)/src -I${MTCKD_BUILD} $(MTCKD_WRAPPER) -I$(NCI) -o $(MTCKD_DIR)/build/cntnm_v4.3__gnu_sgl.obj/mtckd_wrapper.o
 	# Step 3: archive the .o files into a static lib
-	$(FC) -shared -o ../../bin/libmtckd.dll $(MTCKD_DIR)/build/cntnm_v4.3__gnu_sgl.obj/*.o -lquadmath -lgfortran -lm -lnetcdf
+	$(FC) -shared -o ../../bin/libmtckd.dll $(MTCKD_DIR)/build/cntnm_v4.3__gnu_sgl.obj/*.o -lquadmath -lgfortran -lm -lnetcdff -lnetcdf
 	gendef ../../bin/libmtckd.dll
 	lib /def:libmtckd.def /out:../../bin/libmtckd.lib
