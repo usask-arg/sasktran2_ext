@@ -39,7 +39,7 @@ jobs:
           python-version: 3.x
       - name: Build
         run: |
-          apt update && apt install -y libnetcdff-dev gfortran
+          sudo apt update && sudo apt install -y libnetcdff-dev gfortran
           cd build_scripts/MT_CKD
           make mtckd_static
           cd ../..
