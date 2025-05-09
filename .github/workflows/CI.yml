@@ -78,11 +78,7 @@ jobs:
         platform:
           - runner: windows-latest
             target: x64
-    # defaults:
-    #   run:
-    #     shell: msys2 {0}
     steps:
-
       - name: Install MSYS2 and NetCDF
         uses: msys2/setup-msys2@v2
         with:
@@ -93,18 +89,14 @@ jobs:
             mingw-w64-x86_64-netcdf
             mingw-w64-x86_64-netcdf-fortran
             mingw-w64-x86_64-make
-
       - run: git config --global core.autocrlf input
-
       - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
-
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
           architecture: ${{ matrix.platform.target }}
-
       - name: Build
         env:
           NCI: C:/msys64/mingw64/include
@@ -121,7 +113,6 @@ jobs:
           dlltool -d mtckd.def -l mtckd.lib
           cp mtckd.dll c:/msys64/mingw64/bin/
           cd ..
-
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         env:
@@ -130,15 +121,12 @@ jobs:
           CARGO_PROFILE_RELEASE_BUILD_OVERRIDE_DEBUG: true
         with:
           target: ${{ matrix.platform.target }}
-          # target: x86_64-pc-windows-gnu
           args: --release --out dist --find-interpreter -v
-          # sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
-
+          sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
       - name: Append msys root to path
         shell: bash
         run: |
           echo "PATH=$PATH:/c/msys64/mingw64/bin:bin" >> "$GITHUB_ENV"
-
       - name: delve wheels
         shell: bash -el {0}
         run: |
@@ -147,7 +135,6 @@ jobs:
           delvewheel repair dist/*.whl
           rm -rf dist/*.whl
           mv wheelhouse/*.whl dist/
-
       - name: test wheel import
         shell: bash -el {0}
         run: |
@@ -156,7 +143,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-windows
+          name: wheels-windows-${{ matrix.platform.target }}
           path: dist
 
   macos:
