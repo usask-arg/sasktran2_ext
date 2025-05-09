@@ -67,12 +67,20 @@ jobs:
           python-version: 3.x
           architecture: ${{ matrix.platform.target }}
 
-      - name: Build wheels
-        uses: PyO3/maturin-action@v1
+      - name: Build
         env:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
           FC: C:/msys64/mingw64/bin/gfortran.exe
+          MTCKD_LIB_NAME: mtckd.lib
+        run: |
+          cd build_scripts/MT_CKD
+          make mtckd
+          cd ../..
+
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        env:
           MTCKD_LIB_NAME: mtckd.lib
           RUST_BACKTRACE: full
           CARGO_PROFILE_RELEASE_BUILD_OVERRIDE_DEBUG: true
@@ -81,3 +89,22 @@ jobs:
           # target: x86_64-pc-windows-gnu
           args: --release --out dist --find-interpreter -v
           # sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+      - name: Append msys root to path
+        shell: bash -el {0}
+        run: |
+          echo "PATH=$env:PATH:c:/msys64/mingw64/bin" >> $GITHUB_ENV
+
+      - name: delve wheels
+        shell: bash -el {0}
+        run: |
+          pip install delvewheel
+          delvewheel repair dist/*.whl
+          rm -rf dist/*.whl
+          mv wheelhouse/*.whl dist/
+
+      - name: test wheel import
+        shell: bash -el {0}
+        run: |
+          pip install --force-reinstall --verbose dist/*.whl
+          python -c 'import sasktran2_ext'
