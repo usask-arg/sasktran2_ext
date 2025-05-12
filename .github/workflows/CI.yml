@@ -174,7 +174,7 @@ jobs:
       #     version: 13
       - name: Install netcdf-fortran
         run: |
-          brew install netcdf-fortran
+          brew install gfortran netcdf netcdf-fortran
       - name: Build
         if: matrix.platform.target == 'x86_64'
         env:
