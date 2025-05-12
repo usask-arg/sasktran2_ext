@@ -167,11 +167,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      - uses: fortran-lang/setup-fortran@v1
-        id: setup-fortran
-        with:
-          compiler: gcc
-          version: 13
+      # - uses: fortran-lang/setup-fortran@v1
+      #   id: setup-fortran
+      #   with:
+      #     compiler: gcc
+      #     version: 13
       - name: Install netcdf-fortran
         run: |
           brew install netcdf-fortran
