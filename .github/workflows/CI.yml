@@ -10,6 +10,7 @@ on:
     branches:
       - main
       - master
+      - ci-build
     tags:
       - '*'
   pull_request:
@@ -26,8 +27,9 @@ jobs:
         platform:
           - runner: ubuntu-22.04
             target: x86_64
-          - runner: ubuntu-22.04
+          - runner: ubuntu-22.04-arm
             target: aarch64
+      fail-fast: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,6 +37,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
+      - name: Build
+        env:
+          NCI: /usr/include
+          NCL: /usr/lib
+          FC: gfortran
+        run: |
+          sudo apt update && sudo apt install -y libnetcdff-dev gfortran
+          cd build_scripts/MT_CKD
+          make mtckd_static
+          cd ../..
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         if: matrix.platform.target == 'x86_64'
@@ -52,7 +64,11 @@ jobs:
           args: --release --out dist --find-interpreter
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
           manylinux: auto
-          before-script-linux: apt update && apt install -y libnetcdff-dev gfortran
+          before-script-linux: yum install -y epel-release && yum install -y netcdf-fortran-devel
+      - name: test wheel import
+        run: |
+          pip install --force-reinstall --verbose dist/*.whl
+          python -c 'import sasktran2_ext'
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
@@ -67,6 +83,17 @@ jobs:
           - runner: windows-latest
             target: x64
     steps:
+      - name: Install MSYS2 and NetCDF
+        uses: msys2/setup-msys2@v2
+        with:
+          release: false
+          path-type: inherit
+          install: >-
+            mingw-w64-x86_64-gcc-fortran
+            mingw-w64-x86_64-netcdf
+            mingw-w64-x86_64-netcdf-fortran
+            mingw-w64-x86_64-make
+      - run: git config --global core.autocrlf input
       - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
@@ -74,30 +101,49 @@ jobs:
         with:
           python-version: 3.x
           architecture: ${{ matrix.platform.target }}
-  
-      - name: Install make via Chocolatey
-        run: |
-          choco install make --yes
-
-      - name: Install MSYS2 and NetCDF
-        uses: msys2/setup-msys2@v2
-        with:
-          release: false
-          install: >-
-            mingw-w64-x86_64-gcc-fortran
-            mingw-w64-x86_64-netcdf
-            mingw-w64-x86_64-netcdf-fortran
-      - name: Build wheels
-        uses: PyO3/maturin-action@v1
+      - name: Build
         env:
           NCI: C:/msys64/mingw64/include
           NCL: C:/msys64/mingw64/lib
           FC: C:/msys64/mingw64/bin/gfortran.exe
+          MTCKD_LIB_NAME: mtckd.lib
+        shell: msys2 {0}
+        run: |
+          cd build_scripts/MT_CKD
+          make mtckd_shared
+          cd ../..
+          cd bin
+          gendef mtckd.dll
+          dlltool -d mtckd.def -l mtckd.lib
+          cp mtckd.dll c:/msys64/mingw64/bin/
+          cd ..
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        env:
+          MTCKD_LIB_NAME: mtckd.lib
+          RUST_BACKTRACE: full
+          CARGO_PROFILE_RELEASE_BUILD_OVERRIDE_DEBUG: true
         with:
           target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
+          args: --release --out dist --find-interpreter -v
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
-
+      - name: Append msys root to path
+        shell: bash
+        run: |
+          echo "PATH=$PATH:/c/msys64/mingw64/bin:bin" >> "$GITHUB_ENV"
+      - name: delve wheels
+        shell: bash -el {0}
+        run: |
+          pip install delvewheel
+          delvewheel show dist/*whl
+          delvewheel repair dist/*.whl
+          rm -rf dist/*.whl
+          mv wheelhouse/*.whl dist/
+      - name: test wheel import
+        shell: bash -el {0}
+        run: |
+          pip install --force-reinstall --verbose dist/*.whl
+          python -c 'import sasktran2_ext'
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
@@ -113,6 +159,7 @@ jobs:
             target: x86_64
           - runner: macos-14
             target: aarch64
+      fail-fast: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -124,22 +171,51 @@ jobs:
         id: setup-fortran
         with:
           compiler: gcc
-          version: 13
+          version: 14
       - name: Install netcdf-fortran
         run: |
           brew install netcdf-fortran
+      - name: Build
+        if: matrix.platform.target == 'x86_64'
+        env:
+          FC: gfortran
+          NCI: /usr/local/include
+          NCL: /usr/local/lib
+        run: |
+          cd build_scripts/MT_CKD
+          make mtckd_static
+          cd ../..
+      - name: Build
+        if: matrix.platform.target == 'aarch64'
+        env:
+          FC: gfortran
+          NCI: /opt/homebrew/include
+          NCL: /opt/homebrew/lib
+        run: |
+          cd build_scripts/MT_CKD
+          make mtckd_static
+          cd ../..
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
           sccache: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      - name: delocate wheels
+        run: |
+          pip install delocate
+          delocate-listdeps --depending dist/*.whl
+          delocate-wheel dist/*.whl
+          delocate-listdeps dist/*.whl
+      - name: test wheel import
+        run: |
+          pip install --force-reinstall --verbose dist/*.whl
+          python -c 'import sasktran2_ext'
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheels-macos-${{ matrix.platform.target }}
           path: dist
-
   sdist:
     runs-on: ubuntu-latest
     steps:
