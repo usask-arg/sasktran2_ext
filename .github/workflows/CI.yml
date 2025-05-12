@@ -203,6 +203,7 @@ jobs:
       - name: delocate wheels
         run: |
           pip install delocate
+          delocate-listdeps --depending dist/*.whl
           delocate-wheel dist/*.whl
           delocate-listdeps dist/*.whl
       - name: test wheel import
