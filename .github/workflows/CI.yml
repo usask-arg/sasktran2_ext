@@ -171,7 +171,7 @@ jobs:
         id: setup-fortran
         with:
           compiler: gcc
-          version: 14
+          version: 15
       - name: Install netcdf-fortran
         run: |
           brew install netcdf-fortran
