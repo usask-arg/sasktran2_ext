@@ -13,6 +13,7 @@ fn compile_mt_ckd() {
 
     // Add search paths if needed
     println!("cargo:rustc-link-search=native=/opt/homebrew/lib");      // for Homebrew
+    println!("cargo:rustc-link-search=native=/usr/local/lib");         // for Homebrew (intel)
 
     // for msys
     println!("cargo:rustc-link-search=native=C:/msys64/mingw64/lib");

@@ -182,8 +182,6 @@ jobs:
           NCI: /usr/local/include
           NCL: /usr/local/lib
         run: |
-          ls $NCI
-          ls $NCL
           cd build_scripts/MT_CKD
           make mtckd_static
           cd ../..
